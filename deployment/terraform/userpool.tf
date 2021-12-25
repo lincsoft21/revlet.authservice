@@ -1,5 +1,15 @@
 locals {
-  required_attributes = ["given_name", "birthdate"]
+  required_attributes = {
+    "given_name" = {
+      type = "string"
+      contstraints = {
+
+      }
+    }
+    "birthdate" = {
+      type = "DateTime"
+    }
+  }
 }
 
 resource "aws_cognito_user_pool" "revlet_userpool" {
@@ -17,29 +27,30 @@ resource "aws_cognito_user_pool" "revlet_userpool" {
     for_each = local.required_attributes
 
     content {
-      name     = schema.value
-      mutable  = true
-      required = true
+      name                = schema.key
+      attribute_data_type = schema.value.type
+      mutable             = true
+      required            = true
     }
   }
 
   tags = {
     env     = var.ENVIRONMENT
-    service = "propertyservice"
+    service = "authservice"
   }
 }
 
-resource "aws_cognito_user_pool" "revlet_admin_userpool" {
-  name             = format("revlet-%s-admin-userpool", var.ENVIRONMENT)
-  alias_attributes = ["email", "phone_number"]
+# resource "aws_cognito_user_pool" "revlet_admin_userpool" {
+#   name             = format("revlet-%s-admin-userpool", var.ENVIRONMENT)
+#   alias_attributes = ["email", "phone_number"]
 
-  mfa_configuration = "ON"
-  sms_configuration {
-    enabled = true
-  }
+#   mfa_configuration = "ON"
+#   sms_configuration {
+#     enabled = true
+#   }
 
-  tags = {
-    env     = var.ENVIRONMENT
-    service = "propertyservice"
-  }
-}
+#   tags = {
+#     env     = var.ENVIRONMENT
+#     service = "propertyservice"
+#   }
+# }
