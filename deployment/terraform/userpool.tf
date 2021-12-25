@@ -1,7 +1,7 @@
 locals {
   required_attributes = {
     "given_name" = {
-      type = "string"
+      type = "String"
       contstraints = {
 
       }
