@@ -1,7 +1,7 @@
 resource "aws_cognito_user_pool" "revlet_userpool" {
-  name = "revlet-userpool"
+  name = format("revlet-%s-userpool", var.ENVIRONMENT)
 }
 
 resource "aws_cognito_user_pool" "revlet_admin_userpool" {
-  name = "revlet-admin-userpool"
+  name = format("revlet-%s-admin-userpool", var.ENVIRONMENT)
 }
