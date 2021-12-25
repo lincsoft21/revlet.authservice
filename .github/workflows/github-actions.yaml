@@ -1,0 +1,75 @@
+name: authservice-deployment
+on: push
+jobs:
+  # docker_publish:
+  #   needs: 
+  #     - integration_tests
+  #     - unit_tests
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #   - name: Checkout
+  #     uses: actions/checkout@v2
+
+  #   - name: Configure AWS credentials
+  #     uses: aws-actions/configure-aws-credentials@v1
+  #     with:
+  #       aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+  #       aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+  #       aws-region: eu-west-2
+
+  #   - name: Login to Amazon ECR
+  #     id: login-ecr
+  #     uses: aws-actions/amazon-ecr-login@v1
+
+  #   - name: Build and Tag Docker Image
+  #     env:
+  #       ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+  #       ECR_REPOSITORY: linsoft.revlet.propertyservice
+  #       IMAGE_TAG: latest
+  #     run: |
+  #       docker build . -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+
+  #   - name: Push Image to Amazon ECR
+  #     if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+  #     env:
+  #       ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+  #       ECR_REPOSITORY: linsoft.revlet.propertyservice
+  #       IMAGE_TAG: latest
+  #     run: |
+  #       docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+
+  terraform_provision:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v1
+        with:
+          cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+
+      - name: Terraform Init
+        working-directory: ./deployment/terraform
+        id: init
+        run: terraform init
+
+      - name: Terraform Validate
+        working-directory: ./deployment/terraform
+        id: validate
+        run: terraform validate -no-color
+
+      - name: Terraform Plan
+        working-directory: ./deployment/terraform
+        id: plan
+        run: terraform plan
+
+      - name: Terraform Apply
+        working-directory: ./deployment/terraform
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        run: terraform apply -auto-approve
+
+      
+        
+
+
