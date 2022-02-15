@@ -30,3 +30,5 @@ Run the following command to Authenticate with Cognito to get an ID token to tes
 ```
 aws cognito-idp initiate-auth --auth-flow USER_PASSWORD_AUTH --client-id CLIENT_ID --auth-parameters USERNAME=...,PASSWORD=...,SECRET_HASH=...
 ```
+
+### SDP Auth Flow
