@@ -7,7 +7,7 @@ locals {
       }
     }
     "birthdate" = {
-      type = "DateTime"
+      type = "String"
     }
   }
 }
