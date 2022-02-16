@@ -13,8 +13,8 @@ locals {
 }
 
 resource "aws_cognito_user_pool" "revlet_userpool" {
-  name             = format("revlet-%s-userpool", var.ENVIRONMENT)
-  alias_attributes = ["email"]
+  name                = format("revlet-%s-userpool", var.ENVIRONMENT)
+  username_attributes = ["email"]
 
   account_recovery_setting {
     recovery_mechanism {
