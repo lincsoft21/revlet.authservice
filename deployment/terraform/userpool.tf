@@ -23,16 +23,16 @@ resource "aws_cognito_user_pool" "revlet_userpool" {
     }
   }
 
-  dynamic "schema" {
-    for_each = local.required_attributes
+  # dynamic "schema" {
+  #   for_each = local.required_attributes
 
-    content {
-      name                = schema.key
-      attribute_data_type = schema.value.type
-      mutable             = true
-      required            = true
-    }
-  }
+  #   content {
+  #     name                = schema.key
+  #     attribute_data_type = schema.value.type
+  #     mutable             = true
+  #     required            = true
+  #   }
+  # }
 
   tags = {
     env     = var.ENVIRONMENT
