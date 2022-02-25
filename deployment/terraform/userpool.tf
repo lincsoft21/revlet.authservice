@@ -6,9 +6,6 @@ locals {
 
       }
     }
-    "birthdate" = {
-      type = "String"
-    }
   }
 }
 
