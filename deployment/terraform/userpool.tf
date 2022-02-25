@@ -13,6 +13,8 @@ resource "aws_cognito_user_pool" "revlet_userpool" {
   name                = format("revlet-%s-userpool", var.ENVIRONMENT)
   username_attributes = ["email"]
 
+  auto_verified_attributes = ["email"]
+
   account_recovery_setting {
     recovery_mechanism {
       name     = "verified_email"
